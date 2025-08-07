@@ -20,7 +20,7 @@ resource "aws_instance" "ec2" {
   }
 
   iam_instance_profile = var.iam_instance_profile
-  #iam_instance_profile = module.iam_roles.instance_profile_name
+
   metadata_options {
     http_tokens   = "required"
     http_endpoint = "enabled"
