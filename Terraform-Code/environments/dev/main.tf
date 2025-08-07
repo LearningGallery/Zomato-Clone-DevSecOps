@@ -16,6 +16,7 @@ module "subnet" {
   vpc_id       = module.vpc.vpc_id
   subnet_cidr  = var.subnet_cidr
   az           = var.az
+  igw_id       = module.igw.igw_id
 }
 
 module "security_group" {

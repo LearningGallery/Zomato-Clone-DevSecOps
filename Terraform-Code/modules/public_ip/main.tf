@@ -1,4 +1,4 @@
-resource "aws_eip" "public" {
+resource "aws_eip" "eip" {
   #vpc = true
   domain   = "vpc"
   tags = {

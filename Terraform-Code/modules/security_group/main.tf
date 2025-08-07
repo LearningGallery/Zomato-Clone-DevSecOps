@@ -1,20 +1,16 @@
-/* data "csvdecode" "rules" {
-  content = file("${path.module}/rules.csv")
-}
-*/
-
 locals {
   csv_content = file("${path.module}/rules.csv")
   rules       = csvdecode(local.csv_content)
 }
 
-resource "aws_security_group" "main" {
+resource "aws_security_group" "sg" {
   name   = "${var.project_name}-sg"
   vpc_id = var.vpc_id
 
   dynamic "ingress" {
     for_each = local.rules
     content {
+      description = ingress.value.description
       from_port   = ingress.value.from_port
       to_port     = ingress.value.to_port
       protocol    = ingress.value.protocol
