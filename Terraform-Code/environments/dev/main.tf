@@ -30,12 +30,19 @@ module "public_ip" {
   project_name = var.project_name
 }
 
+module "iam_role" {
+  source       = "../../modules/iam_roles"
+  project_name = var.project_name
+}
+
 module "ec2" {
-  source        = "../../modules/ec2"
-  project_name  = var.project_name
-  ami           = var.ami
-  instance_type = var.instance_type
-  subnet_id     = module.subnet.subnet_id
-  sg_id         = module.security_group.sg_id
-  key_name      = var.key_name
+  source               = "../../modules/ec2"
+  project_name         = var.project_name
+  ami                  = var.ami
+  instance_type        = var.instance_type
+  subnet_id            = module.subnet.subnet_id
+  sg_id                = module.security_group.sg_id
+  key_name             = var.key_name
+  iam_instance_profile = module.iam_role.instance_profile_name
+  depends_on           = [module.iam_role]
 }

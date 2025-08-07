@@ -8,7 +8,7 @@ resource "aws_instance" "ec2" {
   instance_market_options {
     market_type = "spot"
     spot_options {
-      max_price = 0.0031
+      max_price = 0.0499
     }
   }
 
@@ -17,6 +17,13 @@ resource "aws_instance" "ec2" {
     volume_size           = 30
     volume_type           = "gp3"
     delete_on_termination = true
+  }
+
+  iam_instance_profile = var.iam_instance_profile
+  #iam_instance_profile = module.iam_roles.instance_profile_name
+  metadata_options {
+    http_tokens   = "required"
+    http_endpoint = "enabled"
   }
 
   user_data = file("${path.module}/../../scripts/bootstrap.sh")
