@@ -26,7 +26,33 @@ resource "aws_instance" "ec2" {
     http_endpoint = "enabled"
   }
 
-  user_data = file("${path.module}/../../scripts/bootstrap.sh")
+  #user_data = file("${path.module}/../../scripts/bootstrap_script_for_ubuntu.sh")
+
+  provisioner "file" {
+    source      = "${path.module}/../../scripts/bootstrap_script_for_ubuntu.sh"
+    destination = "/home/ubuntu/bootstrap_script_for_ubuntu.sh"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file(var.private_key_path)
+      host        = self.public_ip
+    }
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /home/ubuntu/bootstrap_script_for_ubuntu.sh",
+      "sudo /home/ubuntu/bootstrap_script_for_ubuntu.sh"
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file(var.private_key_path)
+      host        = self.public_ip
+    }
+  }
 
   tags = {
     Name = "${var.project_name}-instance"

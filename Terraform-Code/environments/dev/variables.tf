@@ -5,3 +5,4 @@ variable "az" {}
 variable "instance_type" {}
 variable "ami" {}
 variable "key_name" {}
+variable "private_key_path" {}

@@ -45,4 +45,5 @@ module "ec2" {
   key_name             = var.key_name
   iam_instance_profile = module.iam_role.instance_profile_name
   depends_on           = [module.iam_role]
+  private_key_path     = var.private_key_path
 }

@@ -5,3 +5,4 @@ variable "subnet_id" {}
 variable "sg_id" {}
 variable "key_name" {}
 variable "iam_instance_profile" {}
+variable "private_key_path" {}
