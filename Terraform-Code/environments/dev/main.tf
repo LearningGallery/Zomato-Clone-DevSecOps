@@ -4,6 +4,12 @@ module "vpc" {
   vpc_cidr     = var.vpc_cidr
 }
 
+module "igw" {
+  source       = "../../modules/igw"
+  vpc_id       = module.vpc.vpc_id
+  project_name = var.project_name
+}
+
 module "subnet" {
   source       = "../../modules/subnet"
   project_name = var.project_name
