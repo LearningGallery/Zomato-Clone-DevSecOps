@@ -3,3 +3,4 @@ Allow-SSH,22,22,tcp,0.0.0.0/0
 Allow-HTTP,80,80,tcp,0.0.0.0/0
 Allow-HTTPS,443,443,tcp,0.0.0.0/0
 Allow-JenKins,8080,8080,tcp,0.0.0.0/0
+Allow-SonarQube,9000,9000,tcp,0.0.0.0/0
