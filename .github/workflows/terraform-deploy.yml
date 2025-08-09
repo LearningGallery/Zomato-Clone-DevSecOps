@@ -56,23 +56,35 @@ jobs:
         run: terraform init -input=false
         working-directory: Terraform-Code/environments/dev
             
-      - name: Terraform fmt check
-        run: |
-          cd $TF_WORKING_DIR
-          terraform fmt -check -recursive
-        working-directory: ${{ env.TF_WORKING_DIR }}
+      #- name: Terraform fmt check
+      #  run: |
+      #    cd $TF_WORKING_DIR
+      #    terraform fmt -check -recursive
+      #  working-directory: ${{ env.TF_WORKING_DIR }}
 
-      - name: Terraform validate
-        run: |
-          cd $TF_WORKING_DIR
-          terraform validate
-        working-directory: ${{ env.TF_WORKING_DIR }}
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive
+        working-directory: Terraform-Code/environments/dev
+      
+      #- name: Terraform validate
+      #  run: |
+      #    cd $TF_WORKING_DIR
+      #    terraform validate
+      #  working-directory: ${{ env.TF_WORKING_DIR }}
 
-      - name: Terraform plan
-        run: |
-          cd $TF_WORKING_DIR
-          terraform plan -out=tfplan -input=false -var-file="terraform.tfvars"
-        working-directory: ${{ env.TF_WORKING_DIR }}
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: Terraform-Code/environments/dev
+
+      #- name: Terraform plan
+      #  run: |
+      #    cd $TF_WORKING_DIR
+      #    terraform plan -out=tfplan -input=false -var-file="terraform.tfvars"
+      #  working-directory: ${{ env.TF_WORKING_DIR }}
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan -input=false -var-file="terraform.tfvars"
+        working-directory: Terraform-Code/environments/dev
 
       - name: Terraform apply
         if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
