@@ -12,7 +12,7 @@ on:
 
 env:
   TF_VERSION: "1.12.0"         # adjust to Terraform version you want
-  TF_WORKING_DIR: "Zomato-Clone-DevSecOps/Terraform-Code/environments/dev"
+  TF_WORKING_DIR: "Terraform-Code/environments/dev"
   AWS_REGION: "ap-southeast-1"
 
 jobs:
@@ -30,10 +30,10 @@ jobs:
           fetch-depth: 0
       
       - name: List repo root
-        run: ls -la
-
-      - name: List Terraform folder
-        run: ls -la Terraform-Code/environments/dev
+        run: |
+          pwd
+          ls -l
+          ls -l Terraform-Code/environments/dev
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
