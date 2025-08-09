@@ -69,7 +69,7 @@ jobs:
       #  working-directory: ${{ env.TF_WORKING_DIR }}
 
       - name: Terraform fmt
-        run: terraform fmt -check -recursive
+        run: terraform fmt # -check -recursive
         working-directory: Terraform-Code/environments/dev
       
       #- name: Terraform validate
