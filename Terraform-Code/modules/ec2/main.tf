@@ -8,7 +8,7 @@ resource "aws_instance" "ec2" {
   instance_market_options {
     market_type = "spot"
     spot_options {
-      max_price = 0.0503
+      max_price = 0.0505
     }
   }
   
