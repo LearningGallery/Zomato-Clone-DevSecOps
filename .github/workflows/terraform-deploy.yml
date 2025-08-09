@@ -33,6 +33,7 @@ jobs:
         run: |
           pwd
           ls -l
+          ls -l Terraform-Code/environments
           ls -l Terraform-Code/environments/dev
 
       - name: Setup Terraform
