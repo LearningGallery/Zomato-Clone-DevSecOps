@@ -35,6 +35,12 @@ jobs:
           ls -l
           ls -l Terraform-Code/environments
           ls -l Terraform-Code/environments/dev
+    
+      - name: Save SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/my-key.pem
+          chmod 600 ~/.ssh/my-key.pem
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
