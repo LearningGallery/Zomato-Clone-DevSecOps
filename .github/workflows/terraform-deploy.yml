@@ -12,7 +12,7 @@ on:
 
 env:
   TF_VERSION: "1.12.0"         # adjust to Terraform version you want
-  TF_WORKING_DIR: "Terraform-Code/environments/dev"
+  TF_WORKING_DIR: "./Terraform-Code/environments/dev"
   AWS_REGION: "ap-southeast-1"
 
 jobs:
