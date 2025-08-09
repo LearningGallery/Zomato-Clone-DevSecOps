@@ -86,9 +86,13 @@ jobs:
         run: terraform plan -out=tfplan -input=false -var-file="terraform.tfvars"
         working-directory: Terraform-Code/environments/dev
 
-      - name: Terraform apply
-        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
-        run: |
-          cd $TF_WORKING_DIR
-          terraform apply -auto-approve tfplan
-        working-directory: ${{ env.TF_WORKING_DIR }}
+      #- name: Terraform apply
+      #  if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+      #  run: |
+      #    cd $TF_WORKING_DIR
+      #    terraform apply -auto-approve tfplan
+      #  working-directory: ${{ env.TF_WORKING_DIR }}
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+        working-directory: Terraform-Code/environments/dev
