@@ -41,8 +41,8 @@ resource "aws_instance" "ec2" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      #private_key = file(var.private_key_path)
-      private_key = "${path.root}/../../zomato-devsecops-key.pem"
+      private_key = file(var.private_key_path)
+      #private_key = "${path.root}/../../zomato-devsecops-key.pem"
       host        = self.public_ip
     }
   }
@@ -56,8 +56,8 @@ resource "aws_instance" "ec2" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      #private_key = file(var.private_key_path)
-      private_key = "${path.root}/../../zomato-devsecops-key.pem"
+      private_key = file(var.private_key_path)
+      #private_key = "${path.root}/../../zomato-devsecops-key.pem"
       host        = self.public_ip
     }
   }
