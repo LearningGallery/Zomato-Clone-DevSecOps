@@ -1,0 +1,72 @@
+name: Deploy Zomato Infra 
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'Terraform-Code/modules/**'
+      - 'Terraform-Code/environments/**'
+      - 'Terraform-Code/scripts/**'
+      - '.github/workflows/**'
+
+env:
+  TF_VERSION: "1.12.0"         # adjust to Terraform version you want
+  TF_WORKING_DIR: "Terraform-Code/environments/dev"
+  AWS_REGION: "ap-southeast-1"
+
+jobs:
+  deploy:
+    name: Terraform Deploy Zomato Infra
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write          # required for OIDC
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform init
+        run: |
+          cd $TF_WORKING_DIR
+          terraform init -input=false
+        working-directory: ${{ env.TF_WORKING_DIR }}
+
+      - name: Terraform fmt check
+        run: |
+          cd $TF_WORKING_DIR
+          terraform fmt -check -recursive
+        working-directory: ${{ env.TF_WORKING_DIR }}
+
+      - name: Terraform validate
+        run: |
+          cd $TF_WORKING_DIR
+          terraform validate
+        working-directory: ${{ env.TF_WORKING_DIR }}
+
+      - name: Terraform plan
+        run: |
+          cd $TF_WORKING_DIR
+          terraform plan -out=tfplan -input=false -var-file="terraform.tfvars"
+        working-directory: ${{ env.TF_WORKING_DIR }}
+
+      - name: Terraform apply
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+        run: |
+          cd $TF_WORKING_DIR
+          terraform apply -auto-approve tfplan
+        working-directory: ${{ env.TF_WORKING_DIR }}
