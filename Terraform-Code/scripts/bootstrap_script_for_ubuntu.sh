@@ -80,6 +80,30 @@ sudo apt install -y docker.io
 sudo systemctl enable docker
 sudo systemctl start docker
 
+# === Section 6.1: Create systemd service for SonarQube ===
+echo "🧩 Creating systemd service for SonarQube..."
+
+cat <<EOF | sudo tee /etc/systemd/system/sonarqube.service
+[Unit]
+Description=SonarQube Container
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
+ExecStop=/usr/bin/docker stop sonar
+ExecStopPost=/usr/bin/docker rm sonar
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+sudo systemctl enable sonarqube
+sudo systemctl start sonarqube
+
 # === Section 7: Install Jenkins ===
 echo "🧰 Installing Jenkins..."
 
