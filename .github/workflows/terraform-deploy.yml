@@ -28,6 +28,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      
+      - name: List repo root
+        run: ls -la
+
+      - name: List Terraform folder
+        run: ls -la Terraform-Code/environments/dev
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
