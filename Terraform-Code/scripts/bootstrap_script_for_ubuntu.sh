@@ -86,14 +86,19 @@ echo "🧩 Creating systemd service for SonarQube..."
 cat <<EOF | sudo tee /etc/systemd/system/sonarqube.service
 [Unit]
 Description=SonarQube Container
-After=docker.service
 Requires=docker.service
+After=docker.service
+StartLimitIntervalSec=0
 
 [Service]
 Restart=always
-ExecStart=/usr/bin/docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
+# Wait until Docker socket is responsive
+ExecStartPre=/bin/bash -c 'until docker info >/dev/null 2>&1; do echo "⏳  Waiting for Docker to be ready..."; sleep 2; done'
+# Create container if it doesn't exist
+ExecStartPre=/bin/bash -c 'docker ps -a --format "{{.Names}}" | grep -w sonar || docker create --name sonar -p 9000:9000 sonarqube:lts-community'
+# Start container and attach logs
+ExecStart=/usr/bin/docker start -a sonar
 ExecStop=/usr/bin/docker stop sonar
-ExecStopPost=/usr/bin/docker rm sonar
 
 [Install]
 WantedBy=multi-user.target

@@ -8,7 +8,7 @@ resource "aws_instance" "ec2" {
   instance_market_options {
     market_type = "spot"
     spot_options {
-      max_price = 0.0499
+      max_price = 0.0503
     }
   }
   
@@ -17,7 +17,7 @@ resource "aws_instance" "ec2" {
     volume_type           = "gp3"
     delete_on_termination = true
   }
-  
+
   /* ebs_block_device {
     device_name           = "/dev/xvdf"
     volume_size           = 30
